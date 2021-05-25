@@ -29,8 +29,8 @@ class UnitTests(unittest.TestCase):
         coefficients_matrix = [[-1, 3], [3, 5]]
         b_vector = array([3, 7])
         solutions = gaussian_elimination(coefficients_matrix, b_vector)
-        self.assertAlmostEqual(3/7, solutions[0])
-        self.assertAlmostEqual(8/7, solutions[1])
+        expected_solutions = array([3/7, 8/7])
+        self.assertTrue(np.allclose(expected_solutions, solutions))
 
     def test_plu_decomposition(self):
         matrix = array([[1, 2], [3, 4]])
