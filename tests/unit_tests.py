@@ -1,9 +1,10 @@
 import unittest
 from collections import deque
 
+import numpy as np
 from numpy import array
 
-from linear_algebra import gaussian_elimination
+from linear_algebra import gaussian_elimination, plu_decomposition
 from linked_lists import remove_dups, remove_dedup_no_extra_buffer, kth_to_last
 
 
@@ -30,6 +31,11 @@ class UnitTests(unittest.TestCase):
         solutions = gaussian_elimination(coefficients_matrix, b_vector)
         self.assertAlmostEqual(3/7, solutions[0])
         self.assertAlmostEqual(8/7, solutions[1])
+
+    def test_plu_decomposition(self):
+        matrix = array([[1, 2], [3, 4]])
+        p, l, u = plu_decomposition(matrix)
+        self.assertTrue(np.allclose(np.dot(np.dot(p, l), u), matrix))
 
 
 if __name__ == '__main__':
