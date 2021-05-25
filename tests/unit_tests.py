@@ -1,9 +1,9 @@
 import unittest
-from collections import deque
-
 import numpy as np
-from numpy import array
 
+
+from collections import deque
+from numpy import array
 from linear_algebra import gaussian_elimination, plu_decomposition
 from linked_lists import remove_dups, remove_dedup_no_extra_buffer, kth_to_last
 

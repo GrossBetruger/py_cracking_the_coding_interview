@@ -11,4 +11,3 @@ def gaussian_elimination(coefficients: array, b: array) -> ndarray:
 def plu_decomposition(b: ndarray):
     P, L, U = lu(b)
     return P, L, U
-
