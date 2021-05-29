@@ -4,7 +4,7 @@ import numpy as np
 
 from collections import deque
 from numpy import array
-from linear_algebra import gaussian_elimination, plu_decomposition
+from linear_algebra import gaussian_elimination, plu_decomposition, rotate_right, rotate_left
 from linked_lists import remove_dups, remove_dedup_no_extra_buffer, kth_to_last
 
 
@@ -36,6 +36,25 @@ class UnitTests(unittest.TestCase):
         matrix = array([[1, 2], [3, 4]])
         p, l, u = plu_decomposition(matrix)
         self.assertTrue(np.allclose(np.dot(np.dot(p, l), u), matrix))
+
+    def test_rotate_right(self):
+        i_basis_vector = (1, 0)
+        j_basis_vector = (0, 1)
+        i_prime_vector = (0, -1)
+        j_prime_vector = (1, 0)
+        self.assertTrue(np.allclose(i_prime_vector, rotate_right(i_basis_vector)))
+        self.assertTrue(np.allclose(j_prime_vector, rotate_right(j_basis_vector)))
+
+    def test_rotate_left(self):
+        i_basis_vector = (1, 0)
+        j_basis_vector = (0, 1)
+        i_prime_vector = (0, 1)
+        j_prime_vector = (-1, 0)
+        self.assertTrue(np.allclose(i_prime_vector, rotate_left(i_basis_vector)))
+        self.assertTrue(np.allclose(j_prime_vector, rotate_left(j_basis_vector)))
+
+        # 4 rotation are equal to no rotation
+        self.assertTrue(np.allclose(i_basis_vector, rotate_left(rotate_left(rotate_left(rotate_left(i_basis_vector))))))
 
 
 if __name__ == '__main__':
