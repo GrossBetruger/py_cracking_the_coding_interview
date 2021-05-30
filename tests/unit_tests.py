@@ -5,7 +5,7 @@ import numpy as np
 from collections import deque
 from numpy import array
 from linear_algebra import gaussian_elimination, plu_decomposition, rotate_right, rotate_left
-from linked_lists import remove_dups, remove_dedup_no_extra_buffer, kth_to_last
+from linked_lists import remove_dups, remove_dedup_no_extra_buffer, kth_to_last, partition
 
 
 class UnitTests(unittest.TestCase):
@@ -24,6 +24,10 @@ class UnitTests(unittest.TestCase):
         self.assertEqual(1, kth_to_last(linked_list=[1, 2, 3], k=2))
         self.assertEqual(3, kth_to_last(linked_list=[1, 2, 3], k=0))
         self.assertEqual(0, kth_to_last(linked_list=[1, 1, 1, 0, 1, 1], k=2))
+
+    def test_linked_list_partition(self):
+        self.assertEqual([3, 2, 1, 5, 8, 5, 10], partition([3, 5, 8, 5, 10, 2, 1], partition_element=5))
+        self.assertEqual([1, 2, 2, 4], partition([1, 2, 4, 2], partition_element=3))
 
     def test_gaussian_elimination(self):
         coefficients_matrix = [[-1, 3], [3, 5]]

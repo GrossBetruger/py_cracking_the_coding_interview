@@ -5,6 +5,9 @@ from typing import List, TypeVar
 T = TypeVar('T')
 
 
+# Chapter 2 Linked Lists
+# question 2.1
+
 def remove_dups(linked_list: deque) -> deque:
     def dedup(ll: deque):
         counter = Counter()
@@ -24,6 +27,7 @@ def remove_dups(linked_list: deque) -> deque:
     return dedup(linked_list)
 
 
+# question 2.2
 def remove_dedup_no_extra_buffer(linked_list: list):
     to_remove = list()
     for i, item in enumerate(linked_list):
@@ -41,6 +45,7 @@ def remove_dedup_no_extra_buffer(linked_list: list):
     return linked_list
 
 
+# question 2.3
 def kth_to_last(linked_list: List[T], k: int) -> T:
     """
     :param linked_list: list from which returned element is extracted:
@@ -56,6 +61,20 @@ def kth_to_last(linked_list: List[T], k: int) -> T:
     for i, item in enumerate(linked_list):
         if length -1 - k == i:
             return item
+
+
+# question 2.4
+def partition(linked_list: List, partition_element: int):
+    result = list()
+    for elem in linked_list:
+        if elem < partition_element:
+            result.append(elem)
+
+    for elem in linked_list:
+        if elem >= partition_element:
+            result.append(elem)
+
+    return result
 
 
 if __name__ == "__main__":
