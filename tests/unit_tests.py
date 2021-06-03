@@ -1,7 +1,6 @@
 import unittest
 import numpy as np
 
-
 from collections import deque
 from numpy import array
 from linear_algebra import gaussian_elimination, plu_decomposition, rotate_right, rotate_left, \
@@ -34,7 +33,7 @@ class UnitTests(unittest.TestCase):
         coefficients_matrix = [[-1, 3], [3, 5]]
         b_vector = array([3, 7])
         solutions = gaussian_elimination(coefficients_matrix, b_vector)
-        expected_solutions = array([3/7, 8/7])
+        expected_solutions = array([3 / 7, 8 / 7])
         self.assertTrue(np.allclose(expected_solutions, solutions))
 
     def test_plu_decomposition(self):
@@ -65,12 +64,12 @@ class UnitTests(unittest.TestCase):
         v = two_d_vector_from_magnitude_and_angle(magnitude=7, angle=35, orientation=Orientation.XPositiveYNegative)
         x, y = v
         self.assertAlmostEqual(5.73406431, x)
-        self.assertAlmostEqual(-4.01503505 , y)
+        self.assertAlmostEqual(-4.01503505, y)
 
         v = two_d_vector_from_magnitude_and_angle(magnitude=8, angle=10, orientation=Orientation.XPositiveYPositive)
         x, y = v
         self.assertAlmostEqual(1.38918542, x)
-        self.assertAlmostEqual(7.87846202 , y)
+        self.assertAlmostEqual(7.87846202, y)
 
         v = two_d_vector_from_magnitude_and_angle(magnitude=4, angle=310, orientation=Orientation.Absolute)
         w = two_d_vector_from_magnitude_and_angle(magnitude=7, angle=50, orientation=Orientation.Absolute)
@@ -86,8 +85,21 @@ class UnitTests(unittest.TestCase):
         b = array([[2, 0], [0, 2]])
         mult = multiply_matrices(a, b)
         expected = np.array([[10., -4.],
-                            [-2., 10.]])
+                             [-2., 10.]])
         self.assertTrue(np.allclose(expected, mult))
+
+        a = array([[1, -1, 5], [5, 5, 0]])
+        b = array([[-2, 1], [5, 2], [5, -2]])
+        expected = np.array([[18., -11.],
+                             [15., 15.]])
+        self.assertTrue(np.allclose(expected, multiply_matrices(a, b)))
+        #
+        a = array([[2, 8, 3], [5, 4, 1]])
+        b = array([[4, 1], [6, 3], [2, 4]])
+
+        expected = np.array([[62., 38.],
+                            [46., 21.]])
+        self.assertTrue(np.allclose(expected, multiply_matrices(a, b)))
 
 
 if __name__ == '__main__':

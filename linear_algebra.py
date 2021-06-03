@@ -135,7 +135,7 @@ def two_d_vector_from_magnitude_and_angle(magnitude: float,
 
 def multiply_matrices(mat1: ndarray, mat2: ndarray) -> ndarray:
     assert mat1.shape[0] == mat2.transpose().shape[0]
-    product_matrix = np.zeros(mat2.shape)
+    product_matrix = np.zeros((2, 2))
 
     for i, row in enumerate(mat1):
         new_row = []
