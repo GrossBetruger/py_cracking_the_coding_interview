@@ -83,23 +83,29 @@ class UnitTests(unittest.TestCase):
     def test_matrix_multiplication(self):
         a = array([[5, -2], [-1, 5]])
         b = array([[2, 0], [0, 2]])
-        mult = multiply_matrices(a, b)
         expected = np.array([[10., -4.],
                              [-2., 10.]])
-        self.assertTrue(np.allclose(expected, mult))
+        self.assertTrue(np.allclose(expected, multiply_matrices(a, b)))
 
         a = array([[1, -1, 5], [5, 5, 0]])
         b = array([[-2, 1], [5, 2], [5, -2]])
         expected = np.array([[18., -11.],
                              [15., 15.]])
         self.assertTrue(np.allclose(expected, multiply_matrices(a, b)))
-        #
+
         a = array([[2, 8, 3], [5, 4, 1]])
         b = array([[4, 1], [6, 3], [2, 4]])
 
         expected = np.array([[62., 38.],
-                            [46., 21.]])
+                             [46., 21.]])
         self.assertTrue(np.allclose(expected, multiply_matrices(a, b)))
+
+        a = array([[1, 2], [-2, 3]])
+        b = array([[0, -1, 5], [3, 2, 1]])
+        expected = np.array([[6., 3., 7.],
+                             [9., 8., -7.]])
+        self.assertTrue(np.allclose(expected, multiply_matrices(a, b)))
+
 
 
 if __name__ == '__main__':
