@@ -4,7 +4,8 @@ import numpy as np
 
 from collections import deque
 from numpy import array
-from linear_algebra import gaussian_elimination, plu_decomposition, rotate_right, rotate_left
+from linear_algebra import gaussian_elimination, plu_decomposition, rotate_right, rotate_left, \
+    two_d_vector_from_magnitude_and_angle, Orientation, multiply_matrices
 from linked_lists import remove_dups, remove_dedup_no_extra_buffer, kth_to_last, partition
 
 
@@ -59,6 +60,34 @@ class UnitTests(unittest.TestCase):
 
         # 4 rotation are equal to no rotation
         self.assertTrue(np.allclose(i_basis_vector, rotate_left(rotate_left(rotate_left(rotate_left(i_basis_vector))))))
+
+    def test_2d_vec_trigonometric_creation(self):
+        v = two_d_vector_from_magnitude_and_angle(magnitude=7, angle=35, orientation=Orientation.XPositiveYNegative)
+        x, y = v
+        self.assertAlmostEqual(5.73406431, x)
+        self.assertAlmostEqual(-4.01503505 , y)
+
+        v = two_d_vector_from_magnitude_and_angle(magnitude=8, angle=10, orientation=Orientation.XPositiveYPositive)
+        x, y = v
+        self.assertAlmostEqual(1.38918542, x)
+        self.assertAlmostEqual(7.87846202 , y)
+
+        v = two_d_vector_from_magnitude_and_angle(magnitude=4, angle=310, orientation=Orientation.Absolute)
+        w = two_d_vector_from_magnitude_and_angle(magnitude=7, angle=50, orientation=Orientation.Absolute)
+        x, y = v
+        self.assertAlmostEqual(2.57115044, x)
+        self.assertAlmostEqual(-3.06417777, y)
+        x, y = w
+        self.assertAlmostEqual(4.49951327, x)
+        self.assertAlmostEqual(5.3623111, y)
+
+    def test_matrix_multiplication(self):
+        a = array([[5, -2], [-1, 5]])
+        b = array([[2, 0], [0, 2]])
+        mult = multiply_matrices(a, b)
+        expected = np.array([[10., -4.],
+                            [-2., 10.]])
+        self.assertTrue(np.allclose(expected, mult))
 
 
 if __name__ == '__main__':

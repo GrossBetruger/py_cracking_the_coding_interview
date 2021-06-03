@@ -1,7 +1,9 @@
-from dataclasses import dataclass
-from typing import Tuple
-
 import numpy as np
+
+from dataclasses import dataclass
+from enum import Enum, auto
+from math import radians, sin, cos
+from typing import Tuple, Annotated, Optional
 from PIL import Image
 from numpy import array, ndarray
 from numpy.linalg import inv
@@ -12,6 +14,18 @@ from scipy.linalg import lu
 class Point:
     x: int
     y: int
+
+
+class Orientation(Enum):
+    XPositiveYPositive = auto()
+    XPositiveYNegative = auto()
+    XNegativeYPositive = auto()
+    XNegativeYNegative = auto()
+    Absolute = auto()
+
+
+Degree = Annotated[float, (0, 360)]
+
 
 def gaussian_elimination(coefficients: array, b: array) -> ndarray:
     solutions = inv(coefficients) @ b  # synthetic sugar for: matmul(inv(coefficients), b)
@@ -77,6 +91,60 @@ def rotate_image_left(image: ndarray):
     for point_vector in np.transpose(np.nonzero(image)):
         set_point(rotate_left(point_vector), rotated_image)
     return rotated_image
+
+
+def two_d_vector_from_magnitude_and_angle(magnitude: float,
+                                          angle: Degree,
+                                          orientation: Optional[Orientation] = Orientation.Absolute) -> ndarray:
+    radian_angle = radians(angle)
+    if orientation is Orientation.XPositiveYPositive:
+        v = array(
+            [magnitude * sin(radian_angle),  # X component
+             magnitude * cos(radian_angle)]  # Y Component
+        )
+
+    elif orientation is Orientation.XPositiveYNegative:
+        v = array(
+            [magnitude * cos(radian_angle),  # X component
+             magnitude * sin(radian_angle) * -1]  # Y Component
+        )
+
+    elif orientation is Orientation.XNegativeYPositive:
+        v = array(
+            [magnitude * sin(radian_angle) * -1,  # X component
+             magnitude * cos(radian_angle) ]  # Y Component
+        )
+
+    elif orientation is Orientation.XNegativeYNegative:
+        v = array(
+            [magnitude * cos(radian_angle) * -1,  # X component
+             magnitude * sin(radian_angle) * -1]  # Y Component
+        )
+
+    elif orientation is Orientation.Absolute:
+        v = array(
+            [magnitude * cos(radian_angle),  # X component
+             magnitude * sin(radian_angle)]  # Y Component
+        )
+
+    else:
+        raise ValueError(f"Invalid Orientation: {orientation}")
+
+    return v
+
+
+def multiply_matrices(mat1: ndarray, mat2: ndarray) -> ndarray:
+    assert mat1.shape[0] == mat2.transpose().shape[0]
+    product_matrix = np.zeros(mat2.shape)
+
+    for i, row in enumerate(mat1):
+        new_row = []
+        for column in mat2.transpose():
+            new_cell = np.dot(row, column)
+            new_row.append(new_cell)
+        product_matrix[i] = np.array(new_row)
+
+    return product_matrix
 
 
 if __name__ == "__main__":
