@@ -169,18 +169,6 @@ def multiply_matrices(mat1: ndarray, mat2: ndarray) -> ndarray:
     return product_matrix
 
 
-def least_squares_method(x: ndarray, y: ndarray):
-    try:
-        assert len(x) == len(y)
-    except AssertionError:
-        raise ValueError(f"lengths x, y differ: {len(x), len(y)}")
-
-    n = len(x)
-    m = (n * sum(x * y) - x.sum() * y.sum()) / n * x**2 - x.sum()**2
-    b = (y.sum() - m * x.sum()) / n
-    return lambda x: m*x + b
-
-
 if __name__ == "__main__":
     # Rotation transformations
     img = np.identity(200)
