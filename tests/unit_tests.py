@@ -1,11 +1,13 @@
 import unittest
+from random import randint
+
 import numpy as np
 
 from collections import deque
 from numpy import array
 from linear_algebra import gaussian_elimination, plu_decomposition, rotate_right, rotate_left, \
     two_d_vector_from_magnitude_and_angle, Orientation, multiply_matrices
-from linked_lists import remove_dups, remove_dedup_no_extra_buffer, kth_to_last, partition
+from linked_lists import remove_dups, remove_dedup_no_extra_buffer, kth_to_last, partition, sum_lists, palindrome
 
 
 class UnitTests(unittest.TestCase):
@@ -28,6 +30,50 @@ class UnitTests(unittest.TestCase):
     def test_linked_list_partition(self):
         self.assertEqual([3, 2, 1, 5, 8, 5, 10], partition([3, 5, 8, 5, 10, 2, 1], partition_element=5))
         self.assertEqual([1, 2, 2, 4], partition([1, 2, 4, 2], partition_element=3))
+
+    def test_linked_list_sum_lists(self):
+
+        # 617 + 295 = 912
+        self.assertEqual([2, 1, 9], sum_lists([7, 1, 6], [5, 9, 2]))
+
+        # 999 + 3 = 1002
+        self.assertEqual([2, 0, 0, 1], sum_lists([9, 9, 9], [3]))
+
+        # 504 + 2001 = 2505
+        self.assertEqual([5, 0, 5, 2], sum_lists([4, 0, 5], [1, 0, 0, 2]))
+
+        def normalize(n: int) -> list:
+            return list(reversed([int(x) for x in list(str(n))]))
+
+        def reverse_normalize(l: list) -> int:
+            return int("".join([str(x) for x in reversed(l)]))
+
+        for a, b, s in [
+            (537 , 579 , 1116),
+            (283 , 795 , 1078),
+            (1974 , 3050 , 5024),
+            (4384 , 1345 , 5729)
+        ]:
+            self.assertEqual(s, a + b)
+            a, b = normalize(a), normalize(b)
+            normalized_sum = sum_lists(a, b)
+            self.assertEqual(s, reverse_normalize(normalized_sum))
+
+    def test_palindrome(self):
+        palindrome_lst = [3, 4, 5, 4, 3]
+        self.assertTrue(palindrome(palindrome_lst))
+
+        not_palindrome_lst = [3, 4, 5, 4, 2]
+        self.assertFalse(palindrome(not_palindrome_lst))
+
+        palindrome_lst = [2, 1, 1, 2]
+        self.assertTrue(palindrome(palindrome_lst))
+
+        not_palindrome_lst = [1, 1, 1, 0]
+        self.assertFalse(palindrome(not_palindrome_lst))
+
+        not_palindrome_lst = [2, 1, 0, 3, 4, 0, 1, 2]
+        self.assertFalse(palindrome(not_palindrome_lst))
 
     def test_gaussian_elimination(self):
         coefficients_matrix = [[-1, 3], [3, 5]]
