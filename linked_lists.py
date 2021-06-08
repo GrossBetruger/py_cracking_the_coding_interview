@@ -125,7 +125,16 @@ def palindrome(l: list) -> bool:
     def method2():
         return l == list(reversed(l))
 
-    predicates = [method1(), method2()]
+    def method3():
+        stack = list()
+        for link in l:
+            stack.append(link)
+        for link in l:
+            if link != stack.pop():
+                return False
+        return True
+
+    predicates = [method1(), method2(), method3()]
     assert set(predicates) == {False} or set(predicates) == {True}  # all False or all True
     return all(predicates)
 
