@@ -169,6 +169,27 @@ def multiply_matrices(mat1: ndarray, mat2: ndarray) -> ndarray:
     return product_matrix
 
 
+def take_derivative(function_parameters: ndarray) -> ndarray:
+    """
+    :param function_parameters: numpy array of coefficients
+    :return: derivative as numpy array of coefficients
+    """
+
+    degree = len(function_parameters)
+    d: ndarray = np.eye(degree, k=1)
+    derivative_matrix = np.zeros(shape=(degree, degree))
+    for i, row in enumerate(d):
+        derivative_matrix[i] = np.where(row > 0, i+1, 0)
+
+    #  example derivative matrix (degree = 4; which mathematically is degree 3)
+    # [[0. 1. 0. 0.]
+    #  [0. 0. 2. 0.]
+    #  [0. 0. 0. 3.]
+    #  [0. 0. 0. 0.]]
+
+    return derivative_matrix @ function_parameters
+
+
 if __name__ == "__main__":
     # Rotation transformations
     img = np.identity(200)

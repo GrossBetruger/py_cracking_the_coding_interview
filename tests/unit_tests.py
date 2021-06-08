@@ -6,7 +6,7 @@ import numpy as np
 from collections import deque
 from numpy import array
 from linear_algebra import gaussian_elimination, plu_decomposition, rotate_right, rotate_left, \
-    two_d_vector_from_magnitude_and_angle, Orientation, multiply_matrices, LeastSquares
+    two_d_vector_from_magnitude_and_angle, Orientation, multiply_matrices, LeastSquares, take_derivative
 from linked_lists import remove_dups, remove_dedup_no_extra_buffer, kth_to_last, partition, sum_lists, palindrome
 
 
@@ -32,7 +32,6 @@ class UnitTests(unittest.TestCase):
         self.assertEqual([1, 2, 2, 4], partition([1, 2, 4, 2], partition_element=3))
 
     def test_linked_list_sum_lists(self):
-
         # 617 + 295 = 912
         self.assertEqual([2, 1, 9], sum_lists([7, 1, 6], [5, 9, 2]))
 
@@ -49,10 +48,10 @@ class UnitTests(unittest.TestCase):
             return int("".join([str(x) for x in reversed(l)]))
 
         for a, b, s in [
-            (537 , 579 , 1116),
-            (283 , 795 , 1078),
-            (1974 , 3050 , 5024),
-            (4384 , 1345 , 5729)
+            (537, 579, 1116),
+            (283, 795, 1078),
+            (1974, 3050, 5024),
+            (4384, 1345, 5729)
         ]:
             self.assertEqual(s, a + b)
             a, b = normalize(a), normalize(b)
@@ -161,6 +160,11 @@ class UnitTests(unittest.TestCase):
         self.assertLessEqual(4.0000000000000036, least_squares.predict(2))
         self.assertLessEqual(11.242857142857142, least_squares.predict(5))
         self.assertLessEqual(16.07142857142857, least_squares.predict(7))
+
+    def test_derivative_matrix(self):
+        polinom = array([5, 4, 5, 1])  # representing (1x^3 + 5x^2 + 4x + 5)
+        expected_derivative = [4., 10., 3., 0.]  # representing d/dx(1x^3 + 5x^2 + 4x + 5) = 3x^2 + 10x +4
+        self.assertTrue(np.allclose(expected_derivative, take_derivative(polinom)))
 
 
 if __name__ == '__main__':
