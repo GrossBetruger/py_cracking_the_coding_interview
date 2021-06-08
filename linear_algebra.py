@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from math import radians, sin, cos
 from typing import Tuple, Annotated, Optional
+
 from PIL import Image
 from numpy import array, ndarray
 from numpy.linalg import inv
@@ -14,6 +15,27 @@ from scipy.linalg import lu
 class Point:
     x: int
     y: int
+
+
+class LeastSquares:
+    def __init__(self):
+        self.pred = None
+
+    def train(self,  x: ndarray, y: ndarray):
+        try:
+            assert len(x) == len(y)
+        except AssertionError:
+            raise ValueError(f"lengths x, y differ: {len(x), len(y)}")
+
+        n = len(x)
+        m = (n * (x * y).sum() - x.sum() * y.sum()) / (n * (x ** 2).sum() - x.sum() ** 2)
+        b = (y.sum() - m * x.sum()) / n
+        self.pred = lambda _x: m * _x + b
+
+    def predict(self, x):
+        if self.pred is None:
+            raise Exception("model not trained, run `train` method first")
+        return self.pred(x)
 
 
 class Orientation(Enum):
@@ -145,6 +167,18 @@ def multiply_matrices(mat1: ndarray, mat2: ndarray) -> ndarray:
         product_matrix[i] = np.array(new_row)
 
     return product_matrix
+
+
+def least_squares_method(x: ndarray, y: ndarray):
+    try:
+        assert len(x) == len(y)
+    except AssertionError:
+        raise ValueError(f"lengths x, y differ: {len(x), len(y)}")
+
+    n = len(x)
+    m = (n * sum(x * y) - x.sum() * y.sum()) / n * x**2 - x.sum()**2
+    b = (y.sum() - m * x.sum()) / n
+    return lambda x: m*x + b
 
 
 if __name__ == "__main__":

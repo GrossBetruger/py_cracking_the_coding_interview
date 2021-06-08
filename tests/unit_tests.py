@@ -6,7 +6,7 @@ import numpy as np
 from collections import deque
 from numpy import array
 from linear_algebra import gaussian_elimination, plu_decomposition, rotate_right, rotate_left, \
-    two_d_vector_from_magnitude_and_angle, Orientation, multiply_matrices
+    two_d_vector_from_magnitude_and_angle, Orientation, multiply_matrices, LeastSquares
 from linked_lists import remove_dups, remove_dedup_no_extra_buffer, kth_to_last, partition, sum_lists, palindrome
 
 
@@ -152,6 +152,15 @@ class UnitTests(unittest.TestCase):
                              [9., 8., -7.]])
         self.assertTrue(np.allclose(expected, multiply_matrices(a, b)))
 
+    def test_least_squares(self):
+        x = array([1, 2, 3, 4, 5, 6, 7])
+        y = array([1.5, 3.8, 6.7, 9.0, 11.2, 13.6, 16])
+        least_squares = LeastSquares()
+        least_squares.train(x, y)
+
+        self.assertLessEqual(4.0000000000000036, least_squares.predict(2))
+        self.assertLessEqual(11.242857142857142, least_squares.predict(5))
+        self.assertLessEqual(16.07142857142857, least_squares.predict(7))
 
 
 if __name__ == '__main__':
