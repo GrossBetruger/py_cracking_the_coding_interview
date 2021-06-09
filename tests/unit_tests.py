@@ -171,9 +171,9 @@ class UnitTests(unittest.TestCase):
         self.assertLessEqual(16.07142857142857, predict(7))
 
     def test_derivative_matrix(self):
-        polinom = array([5, 4, 5, 1])  # representing (1x^3 + 5x^2 + 4x + 5)
+        polynomial = array([5, 4, 5, 1])  # representing (1x^3 + 5x^2 + 4x + 5)
         expected_derivative = [4., 10., 3., 0.]  # representing d/dx(1x^3 + 5x^2 + 4x + 5) = 3x^2 + 10x +4
-        self.assertTrue(np.allclose(expected_derivative, take_derivative(polinom)))
+        self.assertTrue(np.allclose(expected_derivative, take_derivative(polynomial)))
 
     def test_linear_regression_matrix_method(self):
         observed_x_values = array([[1, 1],
