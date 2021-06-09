@@ -190,6 +190,15 @@ def take_derivative(function_parameters: ndarray) -> ndarray:
     return derivative_matrix @ function_parameters
 
 
+def linear_regression(A: ndarray, y: ndarray) -> ndarray:
+    """
+    :param A: approximated system of linear equations as matrix of coefficients:
+    :param y: observed y values
+    :return: solution of system as a column of the shape (slope, y-intercept)
+    """
+    return inv(A.transpose() @ A) @ A.transpose() @ y # (A^(T) A)^(-1) A^(T)Y
+
+
 if __name__ == "__main__":
     # Rotation transformations
     img = np.identity(200)

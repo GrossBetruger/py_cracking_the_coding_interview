@@ -6,7 +6,8 @@ import numpy as np
 from collections import deque
 from numpy import array
 from linear_algebra import gaussian_elimination, plu_decomposition, rotate_right, rotate_left, \
-    two_d_vector_from_magnitude_and_angle, Orientation, multiply_matrices, LeastSquares, take_derivative
+    two_d_vector_from_magnitude_and_angle, Orientation, multiply_matrices, LeastSquares, take_derivative, \
+    linear_regression
 from linked_lists import remove_dups, remove_dedup_no_extra_buffer, kth_to_last, partition, sum_lists, palindrome
 
 
@@ -161,10 +162,32 @@ class UnitTests(unittest.TestCase):
         self.assertLessEqual(11.242857142857142, least_squares.predict(5))
         self.assertLessEqual(16.07142857142857, least_squares.predict(7))
 
+        # compare to matrix method
+        coefficients = array([x, np.ones(x.size)]).transpose()
+        m, b = linear_regression(coefficients, y)
+        predict = lambda _x: m*_x + b
+        self.assertLessEqual(4.0000000000000036, predict(2))
+        self.assertLessEqual(11.242857142857142, predict(5))
+        self.assertLessEqual(16.07142857142857, predict(7))
+
     def test_derivative_matrix(self):
         polinom = array([5, 4, 5, 1])  # representing (1x^3 + 5x^2 + 4x + 5)
         expected_derivative = [4., 10., 3., 0.]  # representing d/dx(1x^3 + 5x^2 + 4x + 5) = 3x^2 + 10x +4
         self.assertTrue(np.allclose(expected_derivative, take_derivative(polinom)))
+
+    def test_linear_regression_matrix_method(self):
+        observed_x_values = array([[1, 1],
+                                   [2, 1],
+                                   [3, 1]])
+        observed_y_values = array([2, 1, 3])
+
+        expected_solution_vector = array([0.5, 1. ])
+
+        self.assertTrue(
+            np.allclose(expected_solution_vector,
+                        linear_regression(observed_x_values, observed_y_values)
+                        )
+        )
 
 
 if __name__ == '__main__':
