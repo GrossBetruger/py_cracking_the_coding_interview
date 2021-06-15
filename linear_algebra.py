@@ -1,14 +1,17 @@
-import numpy as np
-
 from dataclasses import dataclass
 from enum import Enum, auto
 from math import radians, sin, cos
 from typing import Tuple, Annotated, Optional
 
+import matplotlib.pyplot as plt
+import numpy as np
 from PIL import Image
 from numpy import array, ndarray
 from numpy.linalg import inv
 from scipy.linalg import lu
+from sklearn.linear_model import LinearRegression
+from sklearn.datasets._samples_generator import make_blobs
+from sklearn.svm import SVC
 
 
 @dataclass
@@ -199,7 +202,40 @@ def linear_regression(A: ndarray, y: ndarray) -> ndarray:
     return inv(A.transpose() @ A) @ A.transpose() @ y # (A^(T) A)^(-1) A^(T)Y
 
 
+def linear_regression_demo():
+    x = np.random.uniform(-7, 7, (50, 1))
+    y = array([elem*3 + 7 + np.random.uniform(-5, 5)
+               for elem in x])
+    reg = LinearRegression().fit(x, y)
+    y_hat = reg.predict(x)
+    # assert np.allclose(y_hat, y, atol=2)
+
+    plt.scatter(x, y)
+    plt.plot(x, y_hat, color="red")
+    plt.show()
+
+
+def svm_demo():
+    X, y = make_blobs(n_samples=150, centers=2, random_state=42)
+
+    clf = SVC(kernel='linear')
+    clf.fit(X, y)
+
+    clf.predict(X)
+    print(y)
+    # plt.scatter(X, y)
+    # plt.show()
+    # plt.contour(clf, X[:, 0], X[:, 1])
+    # plt.show()
+
+
 if __name__ == "__main__":
+    print(linear_regression(array([[3, -5], [1, -7], [0, 1]]), array([0, 2, 5])))
+    quit()
+
+    svm_demo()
+    # linear_regression_demo()
+    quit()
     # Rotation transformations
     img = np.identity(200)
     for point in np.transpose(np.nonzero(img)):
