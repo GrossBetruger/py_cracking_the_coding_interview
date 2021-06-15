@@ -1,8 +1,6 @@
 from numpy import sqrt
 from termcolor import colored
 
-text = colored('Hello, World!', 'red', attrs=['reverse', 'blink'])
-
 
 def is_prime(n: int) -> bool:
     if n in [0, 1]:
@@ -16,7 +14,7 @@ def is_prime(n: int) -> bool:
 
 
 def number_six_pack_pattern():
-    for i in range(1, 1000):
+    for i in range(1, 10000000):
         printable_number = colored(str(i), 'red') if is_prime(i) else colored(str(i), 'blue')
         print(printable_number, end=" ")
         if i % 6 == 0:
