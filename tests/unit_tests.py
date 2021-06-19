@@ -5,6 +5,8 @@ import numpy as np
 
 from collections import deque
 from numpy import array
+
+from error_correction import HammingMessage
 from linear_algebra import gaussian_elimination, plu_decomposition, rotate_right, rotate_left, \
     two_d_vector_from_magnitude_and_angle, Orientation, multiply_matrices, LeastSquares, take_derivative, \
     linear_regression
@@ -188,6 +190,17 @@ class UnitTests(unittest.TestCase):
                         linear_regression(observed_x_values, observed_y_values)
                         )
         )
+
+    def test_hamming_error_correction(self):
+        message_size = 16
+        assert np.math.log(message_size, 2) - int(np.math.log(message_size, 2)) == 0
+        random_message = np.random.randint(0, 2, message_size)
+        hamming = HammingMessage(random_message)
+        hamming.prepare()
+        for corrupted_bit_offset in [1, 4, 5, 7]:
+            hamming.message[corrupted_bit_offset] = not hamming.message[corrupted_bit_offset]
+            self.assertEqual(corrupted_bit_offset, hamming.check())
+            hamming.prepare()  # fix corrupted parity bit
 
 
 if __name__ == '__main__':
