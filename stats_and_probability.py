@@ -49,14 +49,11 @@ def binomial_distribution_simulation():
                                          rtol=allowed_error)
         print(num_of_successes, observed_frequencies[num_of_successes], phi, within_error_range)
 
-    # plt.plot(binomial_distribution.pmf(binomial_sample), 'o')
-    # plt.show()
+    plt.plot(binomial_distribution.pmf(range(0, 10)), 'o', color='red')
+    plt.bar(list(observed_frequencies), list(observed_frequencies.values()))
+    plt.show()
 
 
 if __name__ == "__main__":
-    binom_dist = binom(10, 0.3)
-    sample = np.arange(0, 10, 0.1)
-    plt.plot(binom_dist.pmf(sample), 'o')
-    plt.show()
-    # binomial_distribution_simulation()
+    binomial_distribution_simulation()
     # simulate_game()
