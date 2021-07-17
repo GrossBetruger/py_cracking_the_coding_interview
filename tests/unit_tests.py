@@ -4,6 +4,8 @@ from random import randint
 import numpy as np
 
 from collections import deque
+
+import scipy
 from numpy import array
 
 from error_correction import HammingMessage
@@ -11,6 +13,7 @@ from linear_algebra import gaussian_elimination, plu_decomposition, rotate_right
     two_d_vector_from_magnitude_and_angle, Orientation, multiply_matrices, LeastSquares, take_derivative, \
     linear_regression
 from linked_lists import remove_dups, remove_dedup_no_extra_buffer, kth_to_last, partition, sum_lists, palindrome
+from stats_and_probability import standard_normal_distribution
 
 
 class UnitTests(unittest.TestCase):
@@ -201,6 +204,10 @@ class UnitTests(unittest.TestCase):
             hamming.message[corrupted_bit_offset] = not hamming.message[corrupted_bit_offset]
             self.assertEqual(corrupted_bit_offset, hamming.check())
             hamming.prepare()  # fix corrupted parity bit
+
+    def test_standard_normal_distribution(self):
+        for x in np.arange(-3, 3, 0.1):
+            self.assertAlmostEqual(standard_normal_distribution(x), scipy.stats.norm.pdf(x))
 
 
 if __name__ == '__main__':

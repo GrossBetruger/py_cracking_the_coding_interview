@@ -1,13 +1,13 @@
-import termcolor
-import numpy as np
-import matplotlib.pyplot as plt
-
-
 from collections import Counter, OrderedDict
 from typing import Union, T
+
+import matplotlib.pyplot as plt
+import numpy as np
+import termcolor
 from numpy import ndarray
 from numpy.random import binomial
 from scipy.stats import binom
+
 
 def simulate_game():
     """
@@ -54,6 +54,27 @@ def binomial_distribution_simulation():
     plt.show()
 
 
+def standard_normal_distribution(x: float) -> float:
+    """
+    :param x: value x
+    :return: phi(x) in the standard normal distribution
+    """
+    stigler_formula = (np.e ** -x ** 2) / np.sqrt(np.pi)
+    regular_formula = (np.e**((-x**2)/2)) / np.sqrt(2 * np.pi)
+    return regular_formula
+
+
 if __name__ == "__main__":
+    # Creation standard normal distribution (mu=0, variance=1)
+    standard_range = np.arange(-3, 3, 0.00001)
+    sample = []
+    for n in standard_range:
+        if standard_normal_distribution(n) > np.random.uniform(low=0, high=1):
+            sample.append(n)
+    plt.hist(sample, bins=30)
+    plt.show()
+
+    # Simulate binomial experiment and compare with PMF values
     binomial_distribution_simulation()
+
     # simulate_game()
