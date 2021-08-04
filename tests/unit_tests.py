@@ -209,6 +209,20 @@ class UnitTests(unittest.TestCase):
         for x in np.arange(-3, 3, 0.1):
             self.assertAlmostEqual(standard_normal_distribution(x), scipy.stats.norm.pdf(x))
 
+    def test_normal_distribution_pdf(self):
+        integral = float()
+        # use standard normal dist function as pdf for normal dist (they are equivalent)
+        pdf = standard_normal_distribution
+
+        prev_x = 0.
+        for x in np.arange(-100, 100, 0.01):
+            dx = x - prev_x
+            integral += pdf(x) * dx
+            prev_x = x
+        epsilon = 0.000000000000001
+        self.assertAlmostEqual(1., integral, delta=epsilon,
+                               msg="the integral of pdf(x)dx over R should be 1")
+
 
 if __name__ == '__main__':
     unittest.main()
