@@ -24,14 +24,10 @@ def multi_proc_mc_simulator(n: int, f: Callable, args: Optional[tuple] = None):
 
 def circle_in_square_dart_throw(args: tuple):
     n, = args
-    hits = int()
-    for _ in range(n):
-        # throw dart into a 2X2 square
-        dart_hit_x = rand_neg(float(np.random.rand()))  # x uniform between -1 and 1
-        dart_hit_y = rand_neg(float(np.random.rand()))   # y uniform between -1 and 1
-        if dart_hit_x**2 + dart_hit_y ** 2 <= 1: # dart fulls into inner circle with radius 1
-            hits += 1
-
+    dart_xs_vec = np.random.rand(n) * np.random.choice([-1, 1], n)
+    dart_ys_vec = np.random.rand(n) * np.random.choice([-1, 1], n)
+    points = dart_xs_vec**2 + dart_ys_vec**2
+    hits = np.count_nonzero(points <= 1)
     return (hits / n) * 4
 
 
@@ -59,9 +55,9 @@ if __name__ == '__main__':
     n = 10_000_000
     # result should be 6 as the analytical expectation of this game is (2-p)/(1-p)^2
     print('expectation of game:', multi_proc_mc_simulator(n, mc_simulate_two_strikes, args=(0.5,)))
-
+    print()
     print('simulating dart throwing...')
-    pi_approx = multi_proc_mc_simulator(100_000_000, circle_in_square_dart_throw)
+    pi_approx = multi_proc_mc_simulator(300_000_000, circle_in_square_dart_throw)
 
     # color pi digits we got correct
     pi_approx_highlighted = str()
